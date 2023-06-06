@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>PokemonList</title>
+    <link rel="shortcut icon" type="image/png" href="static/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://kit.fontawesome.com/29fc2133c0.js" crossorigin="anonymous"></script>
+    
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <!-- Include Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+    <!-- Include Bootstrap 4 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+    <!-- Include DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Include Editable CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
+
+    <!-- Include Editable JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.js"></script>
+    
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-custom-var">
+        <img src="{{ url_for('static', filename='logo.png') }}" width="175" height="75">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{ url_for('principal') }}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('listar_pokemons') }}">Pokemons </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('favorites') }}">Favorite(s)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('teams') }}">Teams</a>
+                </li>
+              </ul>
+        {% if 'google_id' in session %}
+          <span class="navbar-text">
+            {% if session['picture'] %}
+            <img src="{{ session['picture'] }}" alt="Tu foto de perfil" class="rounded-circle" width="30">
+            {% endif %}
+            <span class="ml-2">{{ session['name'] }}</span>
+          </span>
+          <span class="navbar-text">
+            <a class="nav-link ml-auto" href="{{ url_for('logout') }}">Logout</a>
+          </span>
+        {% else %}
+            <span class="navbar-text ml-auto">
+                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+            </span>
+        {% endif %}
+        </div>
+      </nav>
+      <br>
+      <br>
+      <div id="containerdatatable" class="container">
+        <table id="example" class="display" style="width:100%">
+          <thead>
+              <tr>
+                <th>NºPokedex</th>
+                <th>Pokemon Name</th>
+                <th>Type(s)</th>
+                <th>Image</th>
+                <th>AddTeam</th>
+                <th>Favorite</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for pokemon in pokemons %}
+                  <tr>
+                      <td style="font-size: 20px;">{{ pokemon['id'] }}</td>
+                      <td style="font-size: 20px;">{{ pokemon['name'].title() }}</td>
+                      <td style="font-size: 20px;">
+                        {% for type in pokemon['types'] %}
+                        {{ type['type']['name'].title() }}
+                        {% if not loop.last %}<br> {% endif %}
+                        {% endfor %}
+                      </td>
+                      <td><img src="{{ pokemon.sprites.front_default }}" alt="{{ pokemon['name'] }}"></td>
+                      <td>
+                        {% if pokemon['name'] in equipo|map(attribute='name') %}
+                        <form method="post" action="{{ url_for('removeFromTeam') }}">
+                          <input type="hidden" name="pokemon_id" value="{{ pokemon['id'] }}">
+                          <button type="submit" class="btn btn-sm bg-transparent" onclick="event.preventDefault(); this.closest('form').submit();">
+                            <i class="fas fa-minus" style="font-size:50px"></i>
+                          </button>
+                        </form>
+                        {% else %}
+                          <form method="post" action="{{ url_for('teamsUsu') }}">
+                            <input type="hidden" name="pokemon_name" value="{{ pokemon['name'] }}">
+                            <input type="hidden" name="pokemon_image" value="{{ pokemon['sprites']['front_default'] }}">
+                            <input type="hidden" name="pokemon_id" value="{{ pokemon['id'] }}">
+                            <input type="hidden" name="pokemon_height" value="{{ pokemon['height'] }}">
+                            <input type="hidden" name="pokemon_weight" value="{{ pokemon['weight'] }}">
+                            
+                            {% for stat in pokemon['stats'] %}
+                            <input type="hidden" name="pokemon_stats[]" value="{{ stat['stat']['name'] }}:{{ stat['base_stat'] }}">
+                            {% endfor %}
+  
+                            {% for type in pokemon['types'] %}
+                            <input type="hidden" name="pokemon_types[]" value="{{ type['type']['name'] }}">
+                            {% endfor %}
+  
+                            <button type="submit" class="btn btn-sm bg-transparent" onclick="event.preventDefault(); this.closest('form').submit();">
+                              <i class="fas fa-plus" style='font-size:50px'></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                      </td>
+                      <td>
+                      {% if pokemon['name'] in favoritos|map(attribute='name') %}
+                        <form method="post" action="{{ url_for('removerFavorito') }}">
+                          <input type="hidden" name="pokemon_name" value="{{ pokemon['name'] }}">
+                          <button type="submit" class="btn btn-sm bg-transparent" onclick="event.preventDefault(); this.closest('form').submit();">
+                            <i class='fas fa-star' style='font-size:50px;'></i> <!-- Favorito -->
+                          </button>
+                        </form>
+                      {% else %}
+                        <form method="post" action="{{ url_for('favoritoUsu') }}">
+                          <input type="hidden" name="pokemon_name" value="{{ pokemon['name'] }}">
+                          <button type="submit" class="btn btn-sm bg-transparent" onclick="event.preventDefault(); this.closest('form').submit();">
+                            <i class='far fa-star' style='font-size:50px'></i> <!-- No favorito -->
+                          </button>
+                        </form>
+                      {% endif %}
+                      </td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      </div>
+  <script>
+    $(document).ready( function () {
+      $('#example').DataTable();
+    } );
+  </script>
+  <br>
+  <br>
+  <footer>
+    <div class="footer-container">
+      <div class="social-icons">
+        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+      <div class="vertical-line"></div>
+      <div class="legal-info">
+        <ul>
+        <li><a href="#"><img src="{{ url_for('static', filename='privado.png') }}"></a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+        <li><a href="#">Legal Information</a></li>
+        <li><a href="#">©2023 Pokémon. ©1995 - 2023 Nintendo/Creatures Inc./GAME FREAK inc. TM, ®Nintendo.</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  pokefuture:
+    image: mongo
+    ports:
+      - '27017:27017'
+    
+  update:
+    build: ../Update
+    depends_on:
+      - pokefuture
+    environment:
+     - MONGO_SERVER=pokefuture:27017
+  
+  flask:
+    build: ./
+    depends_on:
+      - pokefuture
+      - update
+    volumes:
+      - .:/app
+    ports:
+      - '80:80'
+
+  

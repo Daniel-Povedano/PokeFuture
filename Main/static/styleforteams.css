@@ -1,0 +1,138 @@
+body {
+  background: url(fondo2.png);
+  background-size: cover;
+  background-attachment: fixed;
+  height: 100%;
+}
+
+.bg-dark {
+  background-color: #000000;
+}
+.container {
+    max-width: 900px; /* Aumenta el ancho para mostrar tres columnas */
+    margin: 0 auto;
+    padding: 20px;
+}
+h1 {
+  text-align: center;
+  color: #000000;
+}
+.bg-custom-var {
+  background-color: #f3e9e9; 
+}
+
+.navbar-text {
+font-size: 17px; /* Tamaño de fuente personalizado */
+}
+#navbarText {
+  font-size: 17px;
+  font-weight: bold;
+}
+.pokemon-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  opacity: 90%;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.pokemon-image {
+  height: 150px;
+  width: 150px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+html, body {
+  height: 100%;
+}
+body {
+  background: url(fondo2.png);
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+}
+ul {
+  list-style: none;
+}
+.pokemon-name {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+  text-align: center;
+  margin-top: 0;
+}
+
+.pokemon-details {
+  text-align: center;
+}
+
+.pokemon-stat {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.container {
+  flex: 1;
+}
+
+.stat-name {
+  flex-basis: 120px;
+  color: #333;
+}
+
+.pokemon-types {
+    margin-top: 10px;
+  }
+
+.pokemon-type {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #5e656b;
+    color: #fff;
+    border-radius: 20px;
+    margin-right: 5px;
+  }
+  footer {
+    background-color: #000000;
+    padding: 20px;
+    text-align: center;
+  }
+  .footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+  }
+  
+  .social-icons {
+    margin-right: 10px;
+  }
+  
+  .social-icons a {
+    color: #fffdfd;
+    font-size: 30px;
+    margin-right: 10px;
+  }
+  
+  .legal-info {
+    margin-left: 10px;
+  }
+  
+  .legal-info a {
+    color: #f8f0f0;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+    text-align: left;
+  }
+  .vertical-line {
+    background-color: #ffffff;
+    width: 2px;
+    height: 100px; /* Ajusta la altura según tus necesidades */
+    margin: 0 10px; /* Ajusta el margen según tus necesidades */
+  }
+  

@@ -1,0 +1,11 @@
+FROM python:3.9
+
+# Install the required packages
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the updater script
+COPY . .
+
+# Run the updater script
+CMD ["python", "UpdateDataBase.py"]

@@ -1,0 +1,123 @@
+navbar-text.user-info {
+  position: relative;
+  left: -10px;
+}
+html, body {
+  height: 100%;
+}
+body {
+  background: url(fondo2.png);
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+}
+ul {
+  list-style: none;
+}
+.bg-dark {
+  background-color: #000000;
+}
+#containerdatatable {
+  background-color: rgba(248, 248, 248, 0.89);
+}
+.container {
+  flex: 1;
+}
+
+td img {
+  width: 100px;
+  height: 100px;
+}
+.bg-custom-var {
+  background-color: #f3e9e9; 
+}
+
+.navbar-text {
+font-size: 17px; /* Tamaño de fuente personalizado */
+}
+#navbarText {
+  font-size: 17px;
+  font-weight: bold;
+}
+footer {
+  background-color: #000000;
+  padding: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.footer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.social-icons {
+  margin-right: 10px;
+}
+
+.social-icons a {
+  color: #fffdfd;
+  font-size: 30px;
+  margin-right: 10px;
+}
+
+.legal-info {
+  margin-left: 10px;
+}
+
+.legal-info a {
+  color: #f8f0f0;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+  text-align: left;
+}
+.vertical-line {
+  background-color: #ffffff;
+  width: 2px;
+  height: 100px; /* Ajusta la altura según tus necesidades */
+  margin: 0 10px; /* Ajusta el margen según tus necesidades */
+}
+
+
+.pokemon-section {
+  background: #fff url("fondo3.png");
+  margin: 20px auto;
+  max-width: 1500px; /* Ajusta el ancho máximo según tus necesidades */
+  padding: 20px;
+}
+
+.pokemon-section .text {
+  font-size: 20px;
+  font-family: Arial, sans-serif; /* Cambiar la fuente a Arial */
+  text-align: center;
+}
+
+.pokemon-section .image img {
+  width: 500px;
+  height: 350px;
+}
+.language-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#language-toggle {
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#language-toggle:hover {
+  background-color: #6e6e6e;
+}
+
+
+
+
