@@ -1,123 +1,148 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-      <title>Teams</title>
-      <link rel="shortcut icon" type="image/png" href="static/favicon.png">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-      <link rel="stylesheet" href="{{ url_for('static', filename='styleforteams.css') }}">
-      <script src="https://kit.fontawesome.com/29fc2133c0.js" crossorigin="anonymous"></script>
-  </head>
-  <body>
-      <nav class="navbar navbar-expand-lg navbar-light bg-custom-var">
-          <img src="{{ url_for('static', filename='logo.png') }}" width="175" height="75">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('principal') }}">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('listar_pokemons') }}">Pokemons </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('favorites') }}">Favorite(s)</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('teams') }}">Teams</a>
-              </li>
-            </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Teams</title>
+    <!-- Se utiliza un favicon personalizado -->
+    <link rel="shortcut icon" type="image/png" href="static/favicon.png">
+    <!-- Se utiliza Bootstrap CSS desde un CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Se utiliza un archivo CSS personalizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleforteams.css') }}">
+    <!-- Se carga FontAwesome desde un CDN -->
+    <script src="https://kit.fontawesome.com/29fc2133c0.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-custom-var">
+        <!-- Logo -->
+        <img src="{{ url_for('static', filename='logo.png') }}" width="175" height="75">
+        <!-- Botón de hamburguesa para colapsar la barra de navegación en dispositivos pequeños -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav mr-auto">
+            <!-- Elementos de navegación -->
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('principal') }}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('listar_pokemons') }}">Pokemons </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('favorites') }}">Favorite(s)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('teams') }}">Teams</a>
+            </li>
+          </ul>
+          <!-- Si hay una sesión activa -->
           {% if 'google_id' in session %}
             <span class="navbar-text">
               {% if session['picture'] %}
+              <!-- Mostrar la foto de perfil si está disponible -->
               <img src="{{ session['picture'] }}" alt="Tu foto de perfil" class="rounded-circle" width="30">
               {% endif %}
+              <!-- Mostrar el nombre del usuario -->
               <span class="ml-2">{{ session['name'] }}</span>
             </span>
             <span class="navbar-text">
+              <!-- Enlace para cerrar sesión -->
               <a class="nav-link ml-auto" href="{{ url_for('logout') }}">Logout</a>
             </span>
           {% else %}
               <span class="navbar-text ml-auto">
+                  <!-- Enlace para iniciar sesión -->
                   <a class="nav-link" href="{{ url_for('login') }}">Login</a>
               </span>
           {% endif %}
+        </div>
+    </nav>
+    <br>
+    <br>
+    <!-- Si hay un equipo de Pokémon -->
+    {% if equipo %}
+    <div class="container">
+    <div class="row">
+    <!-- Por cada Pokémon en el equipo -->
+    {% for pokemon in equipo %}
+        <div class="col-md-4">
+        <div class="pokemon-info">
+        <div class="pokemon-image" style="width: 100%; background-color: {% if 'types' in pokemon %}{% if 'water' in pokemon['types'] %}#53a2eb{% elif 'fire' in pokemon['types'] %}#f08030{% elif 'grass' in pokemon['types'] %}#7ac74c{% elif 'normal' in pokemon['types'] %}#a8a878{% elif 'electric' in pokemon['types'] %}#f8d030{% elif 'ice' in pokemon['types'] %}#98d8d8{% elif 'fighting' in pokemon['types'] %}#c03028{% elif 'poison' in pokemon['types'] %}#a040a0{% elif 'ground' in pokemon['types'] %}#e0c068{% elif 'flying' in pokemon['types'] %}#a890f0{% elif 'psychic' in pokemon['types'] %}#f85888{% elif 'bug' in pokemon['types'] %}#a8b820{% elif 'rock' in pokemon['types'] %}#b8a038{% elif 'ghost' in pokemon['types'] %}#705898{% elif 'dragon' in pokemon['types'] %}#7038f8{% elif 'dark' in pokemon['types'] %}#705848{% elif 'steel' in pokemon['types'] %}#b8b8d0{% elif 'fairy' in pokemon['types'] %}#ee99ac{% endif %}{% endif %}">
+          <!-- Imagen del Pokémon -->
+          <img src="{{ pokemon['image'] }}" alt="{{ pokemon['name'] }}" style="width: 150px">
+        </div>
+        <div class="container-button">
+          <!-- Formulario para eliminar al Pokémon del equipo -->
+          <form method="post" action="{{ url_for('removeFromTeamPage') }}">
+            <input type="hidden" name="pokemon_id" value="{{ pokemon['id'] }}">
+            <button type="submit" class="btn btn-sm bg-transparent" onclick="event.preventDefault(); this.closest('form').submit();">
+              <!-- Icono para eliminar al Pokémon -->
+              <i class="fas fa-minus" style="font-size:50px"></i>
+            </button>
+          </form>
+        </div>
+        <!-- Nombre del Pokémon -->
+        <h1 class="text-center pokemon-name"> #{{ pokemon['id'] }} - {{ pokemon['name'].title() }}</h1>
+        <div class="pokemon-details">
+          <div class="pokemon-types"> 
+            <!-- Tipos del Pokémon -->
+            {% for type in pokemon['types'] %}
+            <span class="pokemon-type" style="background-color: {% if type == 'normal' %}#a8a878{% elif type == 'water' %}#53a2eb{% elif type == 'fire' %}#f08030{% elif type == 'electric' %}#f8d030{% elif type == 'grass' %}#7ac74c{% elif type == 'ice' %}#98d8d8{% elif type == 'fighting' %}#c03028{% elif type == 'poison' %}#a040a0{% elif type == 'ground' %}#e0c068{% elif type == 'flying' %}#a890f0{% elif type == 'psychic' %}#f85888{% elif type == 'bug' %}#a8b820{% elif type == 'rock' %}#b8a038{% elif type == 'ghost' %}#705898{% elif type == 'dragon' %}#7038f8{% elif type == 'dark' %}#705848{% elif type == 'steel' %}#b8b8d0{% elif type == 'fairy' %}#ee99ac{% endif %}; color: white">
+              {{ type.title() }}
+            </span>
+            {% if not loop.last %} {% endif %}
+            {% endfor %}
           </div>
-        </nav>
-        <br>
-        <br>
-        {% if equipo %}
-        <div class="container">
-        <div class="row">
-        {% for pokemon in equipo %}
-            <div class="col-md-4">
-            <div class="pokemon-info">
-            <div class="pokemon-image" style="width: 100%; background-color: {% if 'types' in pokemon %}{% if 'water' in pokemon['types'] %}#53a2eb{% elif 'fire' in pokemon['types'] %}#f08030{% elif 'grass' in pokemon['types'] %}#7ac74c{% elif 'normal' in pokemon['types'] %}#a8a878{% elif 'electric' in pokemon['types'] %}#f8d030{% elif 'ice' in pokemon['types'] %}#98d8d8{% elif 'fighting' in pokemon['types'] %}#c03028{% elif 'poison' in pokemon['types'] %}#a040a0{% elif 'ground' in pokemon['types'] %}#e0c068{% elif 'flying' in pokemon['types'] %}#a890f0{% elif 'psychic' in pokemon['types'] %}#f85888{% elif 'bug' in pokemon['types'] %}#a8b820{% elif 'rock' in pokemon['types'] %}#b8a038{% elif 'ghost' in pokemon['types'] %}#705898{% elif 'dragon' in pokemon['types'] %}#7038f8{% elif 'dark' in pokemon['types'] %}#705848{% elif 'steel' in pokemon['types'] %}#b8b8d0{% elif 'fairy' in pokemon['types'] %}#ee99ac{% endif %}{% endif %}">
-              <img src="{{ pokemon['image'] }}" alt="{{ pokemon['name'] }}" style="width: 150px">
+          <div class="pokemon-stats">
+          <!-- Estadísticas del Pokémon -->
+          {% for stat in pokemon['stats'] %}
+            <div class="pokemon-stat">
+              <span class="stat-name">{{ stat.title() }}</span>
             </div>
-            <div class="container-button">
-              <form method="post" action="{{ url_for('removeFromTeamPage') }}">
-                <input type="hidden" name="pokemon_id" value="{{ pokemon['id'] }}">
-                <button type="submit" class="btn btn-sm bg-transparent" onclick="event.preventDefault(); this.closest('form').submit();">
-                  <i class="fas fa-minus" style="font-size:50px"></i>
-                </button>
-              </form>
-            </div>
-            <h1 class="text-center pokemon-name"> #{{ pokemon['id'] }} - {{ pokemon['name'].title() }}</h1>
-            <div class="pokemon-details">
-              <div class="pokemon-types"> 
-                {% for type in pokemon['types'] %}
-                <span class="pokemon-type" style="background-color: {% if type == 'normal' %}#a8a878{% elif type == 'water' %}#53a2eb{% elif type == 'fire' %}#f08030{% elif type == 'electric' %}#f8d030{% elif type == 'grass' %}#7ac74c{% elif type == 'ice' %}#98d8d8{% elif type == 'fighting' %}#c03028{% elif type == 'poison' %}#a040a0{% elif type == 'ground' %}#e0c068{% elif type == 'flying' %}#a890f0{% elif type == 'psychic' %}#f85888{% elif type == 'bug' %}#a8b820{% elif type == 'rock' %}#b8a038{% elif type == 'ghost' %}#705898{% elif type == 'dragon' %}#7038f8{% elif type == 'dark' %}#705848{% elif type == 'steel' %}#b8b8d0{% elif type == 'fairy' %}#ee99ac{% endif %}; color: white">
-                  {{ type.title() }}
-                </span>
-                {% if not loop.last %} {% endif %}
-                {% endfor %}
-              </div>
-              <div class="pokemon-stats">
-              {% for stat in pokemon['stats'] %}
-                <div class="pokemon-stat">
-                  <span class="stat-name">{{ stat.title() }}</span>
-                </div>
-              {% endfor %}
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-        </div>
-        </div>
-        {% else %}
-        <div class="container">
-          <div class="alert alert-warning" role="alert">
-            You don't have pokemons in your team.
+          {% endfor %}
           </div>
         </div>
-        {% endif %}
-        <footer>
-          <div class="footer-container">
-            <div class="social-icons">
-              <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-              <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-              <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-              <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-              <a href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-            </div>
-            <div class="vertical-line"></div>
-            <div class="legal-info">
-              <ul>
-              <li><a href="#"><img src="{{ url_for('static', filename='privado.png') }}"></a></li>
-              <li><a href="#">Terms of Use</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Cookie Policy</a></li>
-              <li><a href="#">Legal Information</a></li>
-              <li><a href="#">©2023 Pokémon. ©1995 - 2023 Nintendo/Creatures Inc./GAME FREAK inc. TM, ®Nintendo.</a></li>
-              </ul>
-            </div>
-          </div>
-        </footer>
-  </body>
-  </html>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+    </div>
+    {% else %}
+    <!-- Si no hay Pokémon en el equipo -->
+    <div class="container">
+      <div class="alert alert-warning" role="alert">
+        You don't have pokemons in your team.
+      </div>
+    </div>
+    {% endif %}
+    <!-- Pie de página -->
+    <footer>
+      <div class="footer-container">
+        <div class="social-icons">
+          <!-- Enlaces a redes sociales -->
+          <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+        <div class="vertical-line"></div>
+        <div class="legal-info">
+          <ul>
+          <!-- Enlaces de información legal -->
+          <li><a href="#"><img src="{{ url_for('static', filename='privado.png') }}"></a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Legal Information</a></li>
+          <li><a href="#">©2023 Pokémon. ©1995 - 2023 Nintendo/Creatures Inc./GAME FREAK inc. TM, ®Nintendo.</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>

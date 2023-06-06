@@ -11,6 +11,7 @@
     <script src="https://kit.fontawesome.com/29fc2133c0.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-light bg-custom-var">
         <img src="{{ url_for('static', filename='logo.png') }}" width="175" height="75">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,20 +19,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
+                <!-- Enlace a la página principal -->
                 <li class="nav-item active">
                   <a class="nav-link" href="{{ url_for('principal') }}">Principal <span class="sr-only"></span></a>
                 </li>
+                <!-- Enlace a la página de listado de Pokémones -->
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('listar_pokemons') }}">Pokemons </a>
                 </li>
+                <!-- Enlace a la página de Pokémones favoritos -->
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('favorites') }}">Favorito(s)</a>
                 </li>
+                <!-- Enlace a la página de equipos -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('teams') }}">Equipos</a>
                 </li>
               </ul>
         {% if 'google_id' in session %}
+          <!-- Mostrar información del usuario autenticado y enlace para cerrar sesión -->
           <span class="navbar-text">
             {% if session['picture'] %}
             <img src="{{ session['picture'] }}" alt="Tu foto de perfil" class="rounded-circle" width="30">
@@ -42,15 +48,19 @@
             <a class="nav-link ml-auto" href="{{ url_for('logout') }}">Logout</a>
           </span>
         {% else %}
+            <!-- Mostrar enlace para iniciar sesión -->
             <span class="navbar-text ml-auto">
                 <a class="nav-link" href="{{ url_for('login') }}">Login</a>
             </span>
         {% endif %}
         </div>
       </nav>
+      
+      <!-- Contenido principal -->
       <div class="container">
         <div class="row">
           <div class="col">
+            <!-- Sección de Pokémones -->
             <div class="pokemon-section">
               <div class="row">
                 <div class="col-md-6">
@@ -72,6 +82,7 @@
         </div>
         <div class="row">
           <div class="col">
+            <!-- Sección de Pokémones favoritos -->
             <div class="pokemon-section">
               <div class="row">
                 <div class="col-md-6">
@@ -93,6 +104,7 @@
         </div>
         <div class="row">
           <div class="col">
+            <!-- Sección de equipos -->
             <div class="pokemon-section">
               <div class="row">
                 <div class="col-md-6">
@@ -113,10 +125,14 @@
           </div>
         </div>
       </div>
+      
       <br>
       <br>
+      
+      <!-- Pie de página -->
       <footer>
         <div class="footer-container">
+          <!-- Iconos de redes sociales -->
           <div class="social-icons">
             <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
             <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -124,7 +140,9 @@
             <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
             <a href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
           </div>
+          <!-- Línea vertical -->
           <div class="vertical-line"></div>
+          <!-- Información legal -->
           <div class="legal-info">
             <ul>
             <li><a href="#"><img src="{{ url_for('static', filename='privado.png') }}"></a></li>
@@ -136,6 +154,7 @@
             </ul>
           </div>
           </div>
+          <!-- Selector de idioma -->
           <form action="{{ url_for('language_redirect') }}" method="POST">
             <select id="language" name="language" onchange="this.form.submit()">
               <option value="">--Choose language--</option>

@@ -6,12 +6,17 @@
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <title>PokeFuture</title>
     <link rel="shortcut icon" type="image/png" href="static/favicon.png">
+    <!-- Se importa el archivo CSS de Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Se importa el archivo CSS personalizado -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Se importa el kit de iconos Font Awesome -->
     <script src="https://kit.fontawesome.com/29fc2133c0.js" crossorigin="anonymous"></script>
+    <!-- Se importa el archivo JavaScript de idioma -->
     <script src="{{ url_for('static', filename='idioma.js') }}"></script>
 </head>
 <body>
+    <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-light bg-custom-var">
         <img src="{{ url_for('static', filename='logo.png') }}" width="175" height="75">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,120 +36,128 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('teams') }}">Teams</a>
                 </li>
-              </ul>
-        {% if 'google_id' in session %}
-          <span class="navbar-text">
-            {% if session['picture'] %}
-            <img src="{{ session['picture'] }}" alt="Tu foto de perfil" class="rounded-circle" width="30">
-            {% endif %}
-              <span class="ml-2">{{ session['name'] }}</span>
-          </span>
-          <span class="navbar-text">
-            <a class="nav-link ml-auto" href="{{ url_for('logout') }}">Logout</a>
-          </span>
-        {% else %}
-            <span class="navbar-text ml-auto">
-                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-            </span>
-        {% endif %}
-        </div>
-      </nav>
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="pokemon-section">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="text">
-                    <h1 style="text-align: center">Pokemons</h1>
-                    <p>Explore our application to get detailed information about different Pokemons. From their features and statistics to their abilities and evolutions, you'll have access to a vast database. </p>
-                    <br>
-                    <p> Become a master trainer and dive into the fascinating world of Pokemons! </p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="image">
-                    <img src="{{ url_for('static', filename='pokemons.png') }}" width="250" height="250" alt="Pokemon 1">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="pokemon-section">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="text">
-                    <h1 style="text-align: center">Your Favorites</h1>
-                    <p>Use our application to mark your favorite Pokemons and create a personalized list. Explore the collection of Pokemons, and when you find one you like, simply click the favorite button to save it. Access your favorites list from the corresponding page and review your favorite Pokemons anytime.</p>
-                    <br>
-                    <p> Keep your favorite Pokemons always at hand with our application! </p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="image">
-                    <img src="{{ url_for('static', filename='favoritos.png') }}" width="250" height="250" alt="Pokemon 2">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="pokemon-section">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="text">
-                    <h1 style="text-align: center">Your Team</h1>
-                    <p>Our application allows you to create custom teams of Pokemons. Select your favorite Pokemons and add them to your team. Get detailed information about the Pokemons in your team, including their statistics and types. Strategically organize your teams and lead your Pokemons to success in every challenge. </p>
-                    <br>
-                    <p> Showcase your skills as a trainer and strive for victory!  </p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="image">
-                    <img src="{{ url_for('static', filename='teams.png') }}" width="250" height="250" alt="Pokemon 3">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
-      <br>
-      <footer>
-        <div class="footer-container">
-          <div class="social-icons">
-            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-            <a href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-          </div>
-          <div class="vertical-line"></div>
-          <div class="legal-info">
-            <ul>
-            <li><a href="#"><img src="{{ url_for('static', filename='privado.png') }}"></a></li>
-            <li><a href="#">Terms of Use</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Cookie Policy</a></li>
-            <li><a href="#">Legal Information</a></li>
-            <li><a href="#">©2023 Pokémon. ©1995 - 2023 Nintendo/Creatures Inc./GAME FREAK inc. TM, ®Nintendo.</a></li>
             </ul>
-          </div>
-          </div>
-          <form action="{{ url_for('language_redirect') }}" method="POST">
-            <select id="language" name="language" onchange="this.form.submit()">
-              <option value="">--Choose language--</option>
-              <option value="es">Español</option>
-              <option value="en">English</option>
-            </select>
-          </form>                  
+            {% if 'google_id' in session %}
+              <!-- Si el usuario ha iniciado sesión con Google -->
+              <span class="navbar-text">
+                {% if session['picture'] %}
+                <!-- Se muestra la foto de perfil del usuario -->
+                <img src="{{ session['picture'] }}" alt="Tu foto de perfil" class="rounded-circle" width="30">
+                {% endif %}
+                  <span class="ml-2">{{ session['name'] }}</span>
+              </span>
+              <span class="navbar-text">
+                <!-- Enlace para cerrar sesión -->
+                <a class="nav-link ml-auto" href="{{ url_for('logout') }}">Logout</a>
+              </span>
+            {% else %}
+                <!-- Si el usuario no ha iniciado sesión -->
+                <span class="navbar-text ml-auto">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                </span>
+            {% endif %}
         </div>
-      </footer>
+    </nav>
+    <div class="container">
+        <!-- Sección de información sobre Pokemons -->
+        <div class="row">
+            <div class="col">
+                <div class="pokemon-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text">
+                                <h1 style="text-align: center">Pokemons</h1>
+                                <p>Explore our application to get detailed information about different Pokemons. From their features and statistics to their abilities and evolutions, you'll have access to a vast database. </p>
+                                <br>
+                                <p> Become a master trainer and dive into the fascinating world of Pokemons! </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image">
+                                <img src="{{ url_for('static', filename='pokemons.png') }}" width="250" height="250" alt="Pokemon 1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sección de información sobre Pokemons favoritos -->
+        <div class="row">
+            <div class="col">
+                <div class="pokemon-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text">
+                                <h1 style="text-align: center">Your Favorites</h1>
+                                <p>Use our application to mark your favorite Pokemons and create a personalized list. Explore the collection of Pokemons, and when you find one you like, simply click the favorite button to save it. Access your favorites list from the corresponding page and review your favorite Pokemons anytime.</p>
+                                <br>
+                                <p> Keep your favorite Pokemons always at hand with our application! </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image">
+                                <img src="{{ url_for('static', filename='favoritos.png') }}" width="250" height="250" alt="Pokemon 2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sección de información sobre el equipo de Pokemons -->
+        <div class="row">
+            <div class="col">
+                <div class="pokemon-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text">
+                                <h1 style="text-align: center">Your Team</h1>
+                                <p>Our application allows you to create custom teams of Pokemons. Select your favorite Pokemons and add them to your team. Get detailed information about the Pokemons in your team, including their statistics and types. Strategically organize your teams and lead your Pokemons to success in every challenge. </p>
+                                <br>
+                                <p> Showcase your skills as a trainer and strive for victory!  </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image">
+                                <img src="{{ url_for('static', filename='teams.png') }}" width="250" height="250" alt="Pokemon 3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <!-- Pie de página -->
+    <footer>
+        <div class="footer-container">
+            <div class="social-icons">
+                <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+            <div class="vertical-line"></div>
+            <div class="legal-info">
+                <ul>
+                    <li><a href="#"><img src="{{ url_for('static', filename='privado.png') }}"></a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Legal Information</a></li>
+                    <li><a href="#">©2023 Pokémon. ©1995 - 2023 Nintendo/Creatures Inc./GAME FREAK inc. TM, ®Nintendo.</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Selector de idioma -->
+        <form action="{{ url_for('language_redirect') }}" method="POST">
+            <select id="language" name="language" onchange="this.form.submit()">
+                <option value="">--Choose language--</option>
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+        </form>
+    </footer>
 </body>
 </html>

@@ -5,6 +5,7 @@ services:
     image: mongo
     ports:
       - '27017:27017'
+    # Servicio que ejecuta la base de datos MongoDB en un contenedor llamado "pokefuture"
     
   update:
     build: ../Update
@@ -12,6 +13,11 @@ services:
       - pokefuture
     environment:
      - MONGO_SERVER=pokefuture:27017
+    # Servicio que se encarga de la actualización y sincronización de datos.
+    # Se construye a partir del directorio "../Update".
+    # Depende del servicio "pokefuture".
+    # Se establece la variable de entorno "MONGO_SERVER" con el valor "pokefuture:27017",
+    # lo que indica que utilizará el contenedor "pokefuture" como servidor de MongoDB.
   
   flask:
     build: ./
@@ -22,5 +28,9 @@ services:
       - .:/app
     ports:
       - '80:80'
-
-  
+    # Servicio principal que ejecuta la aplicación Flask.
+    # Se construye a partir del directorio actual "./".
+    # Depende de los servicios "pokefuture" y "update".
+    # Se monta el directorio actual como un volumen en el contenedor de la aplicación Flask,
+    # lo que permite que los cambios en los archivos se reflejen en tiempo real.
+    # Se mapea el puerto 80 del host al puerto 80 del contenedor, permitiendo acceder a la aplicación a través de localhost en el navegador.

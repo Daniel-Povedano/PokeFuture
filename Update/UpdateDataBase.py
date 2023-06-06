@@ -9,9 +9,6 @@ db = client["pokeapi"]
 collection = db["pokemons"]
 usuarios_collectio = db["usuarios"]
 
-
-
-
 # Obtención de los datos de la API PokeAPI y agregándolos a la colección de MongoDB
 response = requests.get('https://pokeapi.co/api/v2/pokemon?limit=1010&offset=0')
 data = response.json()
@@ -34,8 +31,8 @@ for pokemon in data['results']:
     else:
         # Si el pokemon ya existe, lo actualizamos
         result = collection.update_one(
-                        {'id': pokemon_id}, 
-                        {'$setOnInsert': pokemon_details}, 
+                        {'id': pokemon_id},
+                        {'$setOnInsert': pokemon_details},
                         upsert=True
                     )
         if result.modified_count == 1:

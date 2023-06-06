@@ -12,24 +12,23 @@ import requests
 
 # Creamos una instancia de Flask y la guardamos en la variable 'app'
 app = Flask(__name__)
+
 # Creamos una instancia de Cache y la configuramos con el tipo de caché 'simple'
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
+
 # Establecemos una clave secreta para la aplicación Flask
 app.secret_key = "Prueba.com"
 
 # Establecemos una variable de entorno para permitir el transporte inseguro de OAuthLib
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-#client2 = pymongo.MongoClient("mongodb://pokefuture:27017/")  # establecemos la conexión a la base de datos
-#db3 = client2["pokeapi"]  
-#collection3 = db3["usuarios"]
-#collection3.insert_one({"email": ""})
-# Creamos dos conexiónes a una base de datos MongoDB local
-
+# Creamos una instancia del cliente de MongoDB y nos conectamos a la base de datos
 client = MongoClient("mongodb://pokefuture:27017/")
+
 # Seleccionamos una base de datos llamada 'pokeapi'
 db = client["pokeapi"]
 db2 = client["pokeapi"]
+
 # Creamos una colección llamada 'pokemons' y 'usuarios'
 collection = db["pokemons"]
 collection2 = db2["usuarios"]
@@ -140,19 +139,20 @@ def callback():
     email = id_info.get("email")
     if not email_en_uso(email):
         email_guardado(email)
-        
-
         return redirect("/")
     else:
         return redirect("/")
 
 @app.route('/favorites')
 def favorites():
+    # Obtenemos el usuario de la base de datos basado en el email de la sesión
     usuario = db.usuarios.find_one({"email": session.get('email')})
     
+    # Si el usuario no ha iniciado sesión con Google, redirigimos a la página de inicio de sesión
     if 'google_id' not in session:
         return redirect(url_for('login'))
     
+    # Obtenemos la lista de favoritos del usuario
     favoritos = usuario.get('favoritos', [])
     
     if favoritos:
@@ -164,30 +164,35 @@ def favorites():
 
 @app.route('/teams')
 def teams():
+    # Obtenemos el usuario de la base de datos basado en el email de la sesión
     usuario = db.usuarios.find_one({"email": session.get('email')})
     
+    # Si el usuario no ha iniciado sesión con Google, redirigimos a la página de inicio de sesión
     if 'google_id' not in session:
         return redirect(url_for('login'))
     
+    # Obtenemos el equipo del usuario
     equipo = usuario.get('teams', [])
     
     if equipo:
         return render_template('teams.html', equipo=equipo)
     else:
-        flash("No tienes Pokémon En el Equipo.", "warning")
+        flash("No tienes Pokémon en el equipo.", "warning")
         return render_template('teams.html')
-
 
 
 @app.route('/favorito', methods=['POST'])
 def favoritoUsu():
+    # Si el usuario no ha iniciado sesión con Google, redirigimos a la página de inicio de sesión
     if 'google_id' not in session:
         return redirect(url_for('login'))
 
+    # Obtenemos los detalles del Pokémon que se va a marcar como favorito
     pokemon_name = request.form['pokemon_name']
     pokemon = db.pokemons.find_one({'name': pokemon_name})
 
     if pokemon:
+        # Obtenemos el usuario de la base de datos basado en el email de la sesión
         usuario = db.usuarios.find_one({'email': session['email']})
         favoritos = usuario.get('favoritos', [])
         favoritos.append({
@@ -201,9 +206,11 @@ def favoritoUsu():
 
 @app.route('/teams', methods=['POST'])
 def teamsUsu():
+    # Si el usuario no ha iniciado sesión con Google, redirigimos a la página de inicio de sesión
     if 'google_id' not in session:
         return redirect(url_for('login'))
 
+    # Obtenemos los detalles del Pokémon que se va a agregar al equipo
     pokemon_name = request.form['pokemon_name']
     pokemon_image = request.form['pokemon_image']
     pokemon_id = request.form['pokemon_id']
@@ -212,6 +219,7 @@ def teamsUsu():
     pokemon_stats = request.form.getlist('pokemon_stats[]')
     pokemon_types = request.form.getlist('pokemon_types[]')
 
+    # Obtenemos el usuario de la base de datos basado en el email de la sesión
     usuario = db.usuarios.find_one({'email': session['email']})
     teams = usuario.get('teams', [])
     teams.append({
@@ -230,6 +238,7 @@ def teamsUsu():
 
 @app.route('/remover', methods=['POST'])
 def removerFavorito():
+    # Si el usuario no ha iniciado sesión con Google, redirigimos a la página de inicio de sesión
     if 'google_id' not in session:
         return redirect(url_for('login'))
 
@@ -237,11 +246,11 @@ def removerFavorito():
     usuario = db.usuarios.find_one({'email': session['email']})
     favoritos = usuario.get('favoritos', [])
 
-    # Find the index of the Pokemon in the favorites list
+    # Buscamos el índice del Pokémon en la lista de favoritos
     index = next((i for i, fav in enumerate(favoritos) if fav['name'] == pokemon_name), None)
 
     if index is not None:
-        # Remove the Pokemon from the favorites list
+        # Removemos el Pokémon de la lista de favoritos
         favoritos.pop(index)
         db.usuarios.update_one({'email': session['email']}, {'$set': {'favoritos': favoritos}})
     
@@ -249,6 +258,7 @@ def removerFavorito():
 
 @app.route('/removeFromTeam', methods=['POST'])
 def removeFromTeam():
+    # Si el usuario no ha iniciado sesión con Google, redirigimos a la página de inicio de sesión
     if 'google_id' not in session:
         return redirect(url_for('login'))
 
@@ -257,7 +267,7 @@ def removeFromTeam():
     usuario = db.usuarios.find_one({'email': session['email']})
     teams = usuario.get('teams', [])
 
-    # Remove the Pokémon with the specified ID from the team
+    # Removemos el Pokémon con el ID especificado del equipo
     teams = [pokemon for pokemon in teams if pokemon['id'] != pokemon_id]
 
     db.usuarios.update_one({'email': session['email']}, {'$set': {'teams': teams}})
@@ -266,6 +276,7 @@ def removeFromTeam():
 
 @app.route('/removeFromTeamPage', methods=['POST'])
 def removeFromTeamPage():
+    # Si el usuario no ha iniciado sesión con Google, redirigimos a la página de inicio de sesión
     if 'google_id' not in session:
         return redirect(url_for('login'))
 
@@ -274,15 +285,17 @@ def removeFromTeamPage():
     usuario = db.usuarios.find_one({'email': session['email']})
     teams = usuario.get('teams', [])
 
-    # Remove the Pokémon with the specified ID from the team
+    # Removemos el Pokémon con el ID especificado del equipo
     teams = [pokemon for pokemon in teams if pokemon['id'] != pokemon_id]
 
     db.usuarios.update_one({'email': session['email']}, {'$set': {'teams': teams}})
 
     return redirect(url_for('teams'))
 
+
 @app.route('/removerFavoritoInFavorites', methods=['POST'])
 def removerFavoritoInFavorites():
+    # Si el usuario no ha iniciado sesión con Google, redirigimos a la página de inicio de sesión
     if 'google_id' not in session:
         return redirect(url_for('login'))
 
@@ -290,11 +303,11 @@ def removerFavoritoInFavorites():
     usuario = db.usuarios.find_one({'email': session['email']})
     favoritos = usuario.get('favoritos', [])
 
-    # Find the index of the Pokemon in the favorites list
+    # Buscamos el índice del Pokémon en la lista de favoritos
     index = next((i for i, fav in enumerate(favoritos) if fav['name'] == pokemon_name), None)
 
     if index is not None:
-        # Remove the Pokemon from the favorites list
+        # Removemos el Pokémon de la lista de favoritos
         favoritos.pop(index)
         db.usuarios.update_one({'email': session['email']}, {'$set': {'favoritos': favoritos}})
     
