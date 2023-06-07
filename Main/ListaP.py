@@ -9,6 +9,8 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 import pymongo
 import requests
+import secrets
+
 
 # Creamos una instancia de Flask y la guardamos en la variable 'app'
 app = Flask(__name__)
@@ -16,8 +18,8 @@ app = Flask(__name__)
 # Creamos una instancia de Cache y la configuramos con el tipo de caché 'simple'
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
-# Establecemos una clave secreta para la aplicación Flask
-app.secret_key = "Prueba.com"
+# Establecemos una clave secreta random para la aplicación Flask
+app.secret_key = secrets.token_hex(32)
 
 # Establecemos una variable de entorno para permitir el transporte inseguro de OAuthLib
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -34,8 +36,13 @@ collection = db["pokemons"]
 collection2 = db2["usuarios"]
 
 # Establecemos una ID de cliente de Google y especificamos la ubicación del archivo JSON que contiene las credenciales del cliente
-GoogleId = "948530004136-e9mu9svk9ppv3ieo9c3k2vmp2ti95dv8.apps.googleusercontent.com"
+
+# IMPORTANTE ---------------------------------------------------------------------------
+# IMPORTANTE ---------------------------------------------------------------------------
+GoogleId = ""
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
+# IMPORTANTE ---------------------------------------------------------------------------
+# IMPORTANTE ---------------------------------------------------------------------------
 
 # Creamos una instancia de la clase Flow y le pasamos las credenciales del cliente, los ámbitos de autorización y la URI de redireccionamiento
 flow = Flow.from_client_secrets_file(
