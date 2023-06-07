@@ -30,4 +30,3 @@
 -  **Flask** - Framework web utilizado en este proyecto.
 -  **MongoDB** - Base de datos NoSQL utilizada para almacenar los datos.
 -  **API PokeApi** - Fuente de datos utilizada para realizar actualizaciones en MongoDB.
->>>>>>> 26050515fbc855c7d164828126a81b964402863e
