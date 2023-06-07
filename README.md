@@ -4,11 +4,12 @@
 - Flask APP + MongoDB en Docker
 
 
+
 ## Descripción del proyecto
 - Este proyecto es una aplicacion Flask que se inicia mediante un docker-compose junto a una base de datos MongoDB y un Python que actualiza la base de datos mediante cogiendo datos a una API externa.
 
 ## Capturas de pantalla 
-<img src="https://github.com/Daniel-Sid/PokeFuture/assets/104014451/84083bca-dad2-4e2c-b981-8b8cd1712ddd" alt="Texto alternativo" width="600" height="300">
+<img src="https://github.com/Daniel-Sid/PokeFuture/assets/104014451/8dc3f00e-61bb-4ca0-987c-f852ac26a1a1" alt="Texto alternativo" width="600" height="300">
 <img src="https://github.com/Daniel-Sid/PokeFuture/assets/104014451/e35e230c-ad9d-4e27-9185-93c9356fffe0" alt="Texto alternativo" width="600" height="300">
 <img src="https://github.com/Daniel-Sid/PokeFuture/assets/104014451/b957d897-f783-4912-8c6a-2213247856de" alt="Texto alternativo" width="600" height="300">
 
